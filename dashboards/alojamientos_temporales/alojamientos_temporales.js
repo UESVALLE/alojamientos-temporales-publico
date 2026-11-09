@@ -248,7 +248,7 @@ function renderSinReporte(){
       <td>${fecha(a.fecha_ultimo_censo || '2026-10-13')}</td>
       <td>Estado operativo por confirmar; no implica cierre</td>
     </tr>`).join('');
-  $('#rowsSinReporte tr[data-id]').forEach(tr=>{
+  $$('#rowsSinReporte tr[data-id]').forEach(tr=>{
     tr.onclick=()=>openFicha(tr.dataset.id);
     tr.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();openFicha(tr.dataset.id);}};
   });
