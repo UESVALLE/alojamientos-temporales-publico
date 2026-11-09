@@ -1,0 +1,23 @@
+{
+  "version": "V6.4-publica",
+  "eventos": [
+    {
+      "id": "sismo2026",
+      "corto": "Sismo 2026",
+      "nombre": "Sismo 2026",
+      "color": "var(--e-sismo)"
+    }
+  ],
+  "tableros": [
+    {
+      "id": "alojamientos_temporales",
+      "proceso": "eis",
+      "evento": "sismo2026",
+      "estado": "publicado",
+      "titulo": "Alojamientos Temporales",
+      "version": "V6.4",
+      "publicado": "2026-11-09",
+      "url": "dashboards/alojamientos_temporales/alojamientos_temporales.html"
+    }
+  ]
+}
