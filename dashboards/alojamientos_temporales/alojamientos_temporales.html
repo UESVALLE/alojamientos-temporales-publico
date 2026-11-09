@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>UESVALLE | Vigilancia sanitaria de Alojamientos Temporales (ATI)</title>
+  <meta name="description" content="Censo actualizado y registros históricos de alojamientos temporales en el Valle del Cauca, con diferenciación de fuentes.">
+  <link rel="stylesheet" href="../../assets/plantilla/uesvalle_plantilla.css?v=1.3">
+  <link rel="stylesheet" href="alojamientos_temporales.css?v=6.2">
+</head>
+<body>
+<div class="govco"><div class="in"><a href="https://www.gov.co/" target="_blank" rel="noopener" title="Ir al portal GOV.CO"><img src="../../assets/plantilla/logo_govco.png" alt="GOV.CO, portal del Estado colombiano"></a></div></div>
+
+<header class="inst">
+  <div class="in">
+    <img class="logos" src="../../assets/plantilla/logos_institucionales.png" alt="Gobernación del Valle del Cauca y Unidad Ejecutora de Saneamiento del Valle del Cauca">
+    <div class="inst-r">
+      <a class="to-portal no-print" href="../../index.html"><svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M19 12H6M11 6.5 5.5 12l5.5 5.5"/></svg><span>Portal de tableros</span></a>
+      <span class="updated" id="updated"><i></i>Actualizado —</span>
+    </div>
+  </div>
+</header>
+
+<section class="band">
+  <div class="in">
+    <div>
+      <div class="band-tags">
+        <a class="tag-p" style="--c:var(--p-eis)" href="../../index.html#eis" title="Ver todos los tableros de este proceso en el portal">Proceso 4 · Establecimientos de interés sanitario</a>
+        <a class="tag-p" style="--c:var(--e-sismo)" href="../../index.html#sismo2026" title="Ver todos los tableros del evento en el portal">Sismo 2026</a>
+      </div>
+      <h1>ALOJAMIENTOS TEMPORALES</h1>
+      <p class="lede" id="lede">Seguimiento poblacional, demográfico e IVC</p><p class="note" style="margin-top:10px">Corte 09/11/2026: 124 personas censadas en 10 alojamientos reportados de 7 municipios. Otros 7 sitios de Yotoco y Restrepo no tienen reporte en este corte; su situación operativa está por verificar. Tres cierres anteriores se conservan en el histórico.</p>
+    </div>
+    <div class="band-r">
+      <button type="button" id="btnPrint" class="band-dl no-print" title="Genera la infografía de una hoja (A3). En el cuadro de impresión elija &quot;Guardar como PDF&quot; y active &quot;Gráficos de fondo&quot;.">
+        <svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 4v11M7.5 10.5 12 15l4.5-4.5M5 19.5h14"/></svg>Descargar infografía
+      </button>
+      Corte de la información<b id="cutDate">—</b>
+    </div>
+  </div>
+</section>
+
+<main class="in" id="sheet">
+  <section class="kpis" id="kpis" aria-label="Cifras principales"></section>
+
+  <div class="tabs no-print" role="tablist" aria-label="Módulos de consulta">
+    <button type="button" role="tab" data-tab="estado"><small>01 · Principal</small>Estado de los alojamientos</button>
+    <button type="button" role="tab" data-tab="territorio"><small>02</small>Distribución territorial</button>
+    <button type="button" role="tab" data-tab="poblacion"><small>03</small>Perfil de la población</button>
+    <button type="button" role="tab" data-tab="cierres"><small>Histórico</small>Alojamientos cerrados</button>
+    <button type="button" role="tab" data-tab="trazabilidad"><small>Trazabilidad</small>Cómo se construyen las cifras</button>
+  </div>
+
+  <div class="activos no-print" id="activos" aria-live="polite"></div>
+
+  <section class="module m-estado" data-mod="estado" id="mod-estado" style="--mc:var(--navy)" aria-labelledby="h-estado">
+    <div class="module-head">
+      <div>
+        <span class="eyebrow dark">Módulo 1</span>
+        <h2 id="h-estado">Estado de los alojamientos</h2>
+        <p>Condiciones de agua, saneamiento, alimentos y animales según el último seguimiento de campo de cada sitio.</p>
+      </div>
+      <div class="legend" aria-label="Convenciones">
+        <span><i class="mk S"></i>Sin observación</span>
+        <span><i class="mk O"></i>Con observación documentada</span>
+        <span><i class="mk V"></i>Por validar</span>
+      </div>
+    </div>
+    <div class="module-body">
+      <div class="components" id="components"></div>
+
+      <div class="toolbar no-print">
+        <label>Municipio
+          <select id="fMun"><option value="">Todos</option></select>
+        </label>
+        <label>Componente
+          <select id="fComp">
+            <option value="">Todos</option>
+            <option value="agua">Con observación en agua</option>
+            <option value="saneamiento">Con observación en saneamiento</option>
+            <option value="alimentos">Con observación en alimentos</option>
+            <option value="animales">Con observación en animales</option>
+          </select>
+        </label>
+        <label>Registro fotográfico
+          <select id="fFoto">
+            <option value="">Todos</option>
+            <option value="con">Con fotografías</option>
+            <option value="sin">Sin fotografías</option>
+          </select>
+        </label>
+        <button type="button" class="btn ghost" id="btnClear">Limpiar</button>
+        <span class="count" id="count"></span>
+      </div>
+
+      <div class="table-wrap">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th scope="col">Municipio</th>
+              <th scope="col">Alojamiento</th>
+              <th scope="col" class="num">Personas</th>
+              <th scope="col">Ocupación</th>
+              <th scope="col" class="c">Agua</th>
+              <th scope="col" class="c">Saneam.</th>
+              <th scope="col" class="c">Alimentos</th>
+              <th scope="col" class="c">Animales</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+      </div>
+      <p class="note no-print">Seleccione un alojamiento para ver su ficha. <span class="cam-legend"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h3l1.6-2.5h6.8L17 8.5h3v10.5H4z"/><circle cx="12" cy="13.5" r="3.3"/></svg> indica registro fotográfico.</span> Ocupación: personas censadas al 13/10/2026 respecto a la capacidad reportada del alojamiento activo.</p>
+    </div>
+  </section>
+
+  <section class="module m-terr" data-mod="territorio" id="mod-territorio" style="--mc:var(--blue)" aria-labelledby="h-terr">
+    <div class="module-head">
+      <div>
+        <span class="eyebrow dark">Módulo 2</span>
+        <h2 id="h-terr">Distribución territorial</h2>
+        <p id="terrLede">Municipios con alojamientos temporales en operación.</p>
+      </div>
+    </div>
+    <div class="module-body">
+      <div class="terr-kpis" id="terrKpis"></div>
+      <div class="terr-grid">
+        <figure class="map" id="map" aria-label="Mapa de municipios del Valle del Cauca con alojamientos temporales">
+          <div class="map-msg">Cargando mapa…</div>
+        </figure>
+        <div>
+          <div class="mlist" id="munBars" role="table" aria-label="Personas, núcleos familiares y sitios por municipio"></div>
+          <div class="legend small">
+            <span><i class="sw cens"></i>Personas censadas</span>
+            <span id="lgPv"><i class="sw pv"></i>Por validar</span>
+            <span>Clic en un municipio para ver sus sitios</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="module m-pob" data-mod="poblacion" id="mod-poblacion" style="--mc:#2f8a86" aria-labelledby="h-pob">
+    <div class="module-head">
+      <div>
+        <span class="eyebrow dark">Módulo 3</span>
+        <h2 id="h-pob">Perfil de la población censada</h2>
+        <p id="pobLede">Personas caracterizadas individualmente en los alojamientos.</p>
+      </div>
+    </div>
+    <div class="module-body people-grid">
+      <div class="pcard">
+        <h3>Curso de vida</h3>
+        <div class="life" id="courseBars"></div>
+        <p class="note">Tono oscuro: niñas, niños, adolescentes y personas mayores.</p>
+      </div>
+      <div class="pcard">
+        <h3>Sexo</h3>
+        <div id="sex"></div>
+        <h3 class="mt">Grupos de atención diferencial</h3>
+        <div class="groups" id="groups"></div>
+      </div>
+      <div class="pcard">
+        <h3>Aseguramiento en salud</h3>
+        <div class="insured" id="insured"></div>
+        <div class="bars" id="epsBars"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="module" data-mod="cierres" id="mod-cierres" style="--mc:var(--ink3)" aria-labelledby="h-cierres">
+    <div class="module-head">
+      <div>
+        <span class="eyebrow dark">Histórico operativo</span>
+        <h2 id="h-cierres">Alojamientos cerrados</h2>
+        <p>Se conserva su última caracterización para trazabilidad; no forman parte de los indicadores ni semáforos actuales.</p>
+      </div>
+    </div>
+    <div class="module-body">
+      <p class="note" id="cerradosResumen">Cargando histórico…</p>
+      <div class="table-wrap">
+        <table class="matrix">
+          <thead>
+            <tr>
+              <th scope="col">Municipio</th>
+              <th scope="col">Alojamiento</th>
+              <th scope="col" class="num">Personas en último registro</th>
+              <th scope="col">Corte del registro</th>
+              <th scope="col">Observaciones</th>
+            </tr>
+          </thead>
+          <tbody id="rowsCerrados"></tbody>
+        </table>
+      </div>
+      <p class="note">Seleccione un alojamiento para consultar su ficha histórica. La disminución de población no permite afirmar, por sí sola, el acceso a vivienda definitiva o el retorno a hogares.</p>
+
+      <h3 style="margin:24px 0 8px">Sitios sin reporte en el corte de noviembre</h3>
+      <p class="note" id="sinReporteResumen">Cargando información de sitios sin reporte…</p>
+      <div class="table-wrap">
+        <table class="matrix">
+          <thead><tr><th scope="col">Municipio</th><th scope="col">Alojamiento</th><th scope="col" class="num">Personas en último censo</th><th scope="col">Corte anterior</th><th scope="col">Situación</th></tr></thead>
+          <tbody id="rowsSinReporte"></tbody>
+        </table>
+      </div>
+      <p class="note">La ausencia en el archivo de noviembre no confirma un cierre ni una evacuación. Estos registros no se suman a la población censada del nuevo corte.</p>
+    </div>
+  </section>
+
+  <section class="module method" data-mod="trazabilidad" id="mod-metodo" style="--mc:var(--ink3)">
+    <div class="module-head">
+      <div>
+        <span class="eyebrow dark">Trazabilidad</span>
+        <h2>Cómo se construyen estas cifras</h2>
+        <p>Reglas de consolidación y estado de la carga de datos.</p>
+      </div>
+    </div>
+    <div class="module-body">
+      <ol class="method-list" id="method"></ol>
+      <h3 style="margin:20px 0 0">Estado de la carga de datos</h3>
+      <div class="carga" id="carga"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="in">
+    <span><span class="privacy"><svg viewBox="0 0 24 24" class="ico" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.2-7.5 9.5-4.3-1.3-7.5-4.9-7.5-9.5V6z"/></svg>Datos agregados y operacionales, sin identificación individual.</span><br><span id="src"></span></span>
+  </div>
+</footer>
+
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal-bg" data-close></div>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <button type="button" class="modal-x" data-close aria-label="Cerrar ficha">×</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Registro fotográfico ampliado">
+  <div class="lb-bg" data-lbclose></div>
+  <figure class="lb-fig">
+    <img id="lbImg" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+  <button type="button" class="lb-btn lb-prev" id="lbPrev" aria-label="Foto anterior">‹</button>
+  <button type="button" class="lb-btn lb-next" id="lbNext" aria-label="Foto siguiente">›</button>
+  <button type="button" class="lb-btn lb-close" id="lbClose" data-lbclose aria-label="Cerrar foto">×</button>
+</div>
+
+<script src="../../assets/plantilla/uesvalle_plantilla.js?v=1.1"></script>
+<script src="alojamientos_temporales.js?v=6.4"></script>
+</body>
+</html>
